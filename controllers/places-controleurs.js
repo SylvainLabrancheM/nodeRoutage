@@ -1,3 +1,5 @@
+const {v4 : uuidv4} = require("uuid");
+
 const HttpErreur = require("../models/http-erreur");
 
 const PLACES = [
@@ -15,7 +17,6 @@ const PLACES = [
   ];
 
 const getPlaceById = (requete, reponse, next) => {
-    console.log(2);
     const placeId = requete.params.placeId;
     const place = PLACES.find((place) => {
       return place.id === placeId;
@@ -41,7 +42,25 @@ const getPlacesByUserId = (requete, reponse, next) => {
   
     reponse.json({ places });
   };
-  
 
+  const creerPlace = ((requete, reponse, next) => {
+      const {titre, description, coordonnees, adresse, createur} = requete.body;
+      console.log(requete.body);
+      //équivalent à const titre = requete.body.title
+      const nouvellePlace ={
+        id: uuidv4(),
+        titre,
+        description,
+        location: coordonnees,
+        adresse,
+        createur
+      }
+
+      PLACES.push(nouvellePlace); //unshift pour ajouter au début
+      // statut 201 lorsque la requête a terminé normalement ET créé quelque chose
+      reponse.status(201).json({place: nouvellePlace}); 
+  })
+  
   exports.getPlaceById = getPlaceById;
   exports.getPlacesByUserId = getPlacesByUserId;
+  exports.creerPlace = creerPlace;
