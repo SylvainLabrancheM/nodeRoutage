@@ -18,20 +18,34 @@ const PLACES = [
 
 
 router.get('/:placeId', (requete, reponse, next) => {
+    console.log(2);
     const placeId = requete.params.placeId;
     const place = PLACES.find(place => {
         return place.id === placeId;
     })
-    console.log("Requête GET /:placeId")
+
+    if(!place){
+        const errreur = new Error("Aucune place trouvé pour l'id fourni")
+        errreur.code = 404;
+        return next(errreur);
+     }
+
     reponse.json({place}); //Revient à {place:place}
 });
 
 router.get('/utilisateur/:utilisateurId', (requete, reponse, next) => {
     const utilisateurId = requete.params.utilisateurId;
+    
     const places = PLACES.find(place => {
         return place.createur === utilisateurId;
     })
-    console.log("Requête GET /utilisateur/:utilisateurId")
+    
+    if(!places){
+        const errreur = new Error("Aucune place trouvée pour l'utilisateur fourni")
+        errreur.code = 404;
+        throw errreur
+     }
+
     reponse.json({places});
 });
 
