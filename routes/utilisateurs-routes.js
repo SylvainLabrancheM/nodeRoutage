@@ -17,22 +17,13 @@ const PLACES = [
   ];
 
 
-router.get('/:placeId', (requete, reponse, next) => {
-    const placeId = requete.params.placeId;
-    const place = PLACES.find(place => {
-        return place.id === placeId;
-    })
-    console.log("Requête GET /:placeId")
-    reponse.json({place}); //Revient à {place:place}
-});
-
-router.get('/utilisateur/:utilisateurId', (requete, reponse, next) => {
+router.get('/:utilisateurId', (requete, reponse, next) => {
     const utilisateurId = requete.params.utilisateurId;
     const places = PLACES.find(place => {
         return place.createur === utilisateurId;
     })
-    console.log("Requête GET /utilisateur/:utilisateurId")
-    reponse.json({places});
+    console.log("Requête GET utilisateurs-routes")
+    reponse.json({places}); //Revient à {place:place}
 });
 
 module.exports = router;
