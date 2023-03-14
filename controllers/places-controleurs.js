@@ -1,8 +1,9 @@
+const { response } = require("express");
 const {v4 : uuidv4} = require("uuid");
 
 const HttpErreur = require("../models/http-erreur");
 
-const PLACES = [
+let PLACES = [
     {
       id: "p1",
       titre: "Empire State Building",
@@ -80,7 +81,12 @@ const getPlacesByUserId = (requete, reponse, next) => {
 
   };
 
-  const supprimerPlace = (requete, reponse, next) => {};
+  const supprimerPlace = (requete, reponse, next) => { 
+    
+    const placeId = requete.params.placeId;
+    PLACES = PLACES.filter(place => place.id !== placeId);
+    reponse.status(200).json({message: "Place supprimée"});
+  };
   
   exports.getPlaceById = getPlaceById;
   exports.getPlacesByUserId = getPlacesByUserId;
