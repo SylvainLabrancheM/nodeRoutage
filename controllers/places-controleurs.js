@@ -60,7 +60,30 @@ const getPlacesByUserId = (requete, reponse, next) => {
       // statut 201 lorsque la requête a terminé normalement ET créé quelque chose
       reponse.status(201).json({place: nouvellePlace}); 
   })
+
+  const updatePlace = (requete, reponse, next) => {
+    const {titre, description} = requete.body;
+    const placeId = requete.params.placeId;
+
+    //Créer une copie de la place, changer la copie puis remplacer l'originale dans le tableau par la copie.
+    //const placeModifiee = PLACE.find(place => place.id === placeId);
+    //L'opérateur ... fait une copie de toutes les pairs clé/valeur, donc de la place elle-même
+      const placeModifiee = {...PLACES.find(place => place.id === placeId)};
+      const indicePlace = PLACES.findIndex(place => place.id === placeId);
+
+      placeModifiee.titre = titre;
+      placeModifiee.description = description;
+
+      PLACES[indicePlace] = placeModifiee;
+
+      reponse.status(200).json({place:placeModifiee});
+
+  };
+
+  const supprimerPlace = (requete, reponse, next) => {};
   
   exports.getPlaceById = getPlaceById;
   exports.getPlacesByUserId = getPlacesByUserId;
   exports.creerPlace = creerPlace;
+  exports.updatePlace = updatePlace;
+  exports.supprimerPlace = supprimerPlace;
