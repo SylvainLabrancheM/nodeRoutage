@@ -33,11 +33,11 @@ const getPlaceById = (requete, reponse, next) => {
 const getPlacesByUserId = (requete, reponse, next) => {
     const utilisateurId = requete.params.utilisateurId;
   
-    const places = PLACES.find((place) => {
+    const places = PLACES.filter((place) => {
       return place.createur === utilisateurId;
     });
   
-    if (!places) {
+    if (!places || places.length === 0) {
       return next(new HttpErreur("Aucune place trouvé pour l'utilisateur fourni", 404));
     }
   
