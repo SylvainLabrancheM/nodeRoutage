@@ -19,6 +19,11 @@ const getUtilisateurs = (requete, reponse, next) => {
 const inscription = (requete, reponse, next) => {
     const {nom, courriel, motDePasse} = requete.body;
 
+    const courrielExiste = UTILISATEURS.find(u => u.courriel === courriel);
+    if(courrielExiste){
+        throw new HttpErreur("Utilisateur existe déjà", 422);
+    }
+
     const nouvelUtilisateur = {
         id: uuidv4(),
         nom, // nom: nom
