@@ -2,19 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const placesRoutes = require("./routes/places-routes")
+const HttpErreur = require("./models/http-erreur");
 
 const app = express();
-
-function shouldParse(req){
-    console.log("shouldParse invoked. Before parsing: body: ", req.body);
-    //return req.get("content-type") === "application/json";
-  }
 
 app.use(bodyParser.json());
 
 app.use("/api/places", placesRoutes);
 
-app.use((error, requete, reponse,next) => {
+app.use((requete, reponse, next) => {
+    return next(new HttpErreur("Route non trouvée", 404));
+});
+
+app.use((error, requete, reponse, next) => {
     if(reponse.headerSent){
         return next(error);
     }
